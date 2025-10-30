@@ -57,9 +57,28 @@ callbacks.Register("Draw", "HotKeys", function()
 	end
 end)
 
+
+
+
 -- 🎨 Draw the scope overlay when zoomed in
 callbacks.Register("Draw", "DrawScope", function()
 	
+	if not entities.GetLocalPlayer() then 
+		gui.SetValue("world.fov", tonumber( gui.GetValue("world.ga_defaultfov"))) 
+		return 
+	end
+
+	if not entities.GetLocalPlayer():IsAlive() then 
+		gui.SetValue("world.fov", tonumber( gui.GetValue("world.ga_defaultfov"))) 
+		return 
+	end
+	
+	if entities.GetLocalPlayer():GetFieldBool( "m_bIsScoped" ) then 
+		gui.SetValue("world.fov", tonumber( gui.GetValue("world.ga_defaultfov"))) 
+		return 
+	end
+	
+	 
 	-- ✅ Only draw if zoomed (FOV = 50) and the "Show Scope" box is enabled
 	if tonumber( gui.GetValue( "world.fov" ) ) == 50 and gui.GetValue( "world.ga_displayscope" ) then
 		draw.SetTexture(texture);
